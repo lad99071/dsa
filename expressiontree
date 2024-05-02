@@ -1,0 +1,210 @@
+#include<iostream>
+#include <cstring>
+using namespace std;
+class Enode
+{
+public:
+char data;
+Enode *left;
+Enode *right;
+};
+
+class Stack
+{
+Enode *a[30];
+int top;
+public:
+Stack()
+{
+top=-1;
+}
+int isfull();
+int isempty();
+void push(Enode *t);
+Enode *pop();
+};
+
+class Etree
+{
+public:
+Enode *root;
+Etree()
+{
+root=NULL;
+}
+void createTree();
+//void postorder(Enode *root);
+void non_rec_post_order(Enode *root);
+void del(Enode *root);
+};
+
+// FUNCTIONS OF Etree
+
+void Etree::createTree()
+{
+char prefix[20];
+char ch;
+Stack s;
+int length , i;
+Enode *nn = NULL,*t = NULL;      // nn means new node
+
+cout<<"enter prefix expression=";
+cin>>prefix;
+
+length= strlen(prefix);     //  calculating the length of prefix array and assigining that length to length variable
+length--;
+for(i=length;i>=0;i--)
+{
+ch=prefix[i];
+nn=new Enode();
+if(ch!=' ')
+{
+nn->data=ch;
+nn->left=NULL;
+nn->right=NULL;
+}
+
+if(ch!='+'&& ch!='-' && ch!='*' && ch!='/')
+{
+s.push(nn);
+// cout<<"\n operand = "<<nn ->data;
+}
+else
+{
+t = s.pop();
+nn->left = t;
+//cout<<"\n left = "<<t->data;
+
+ t = s.pop();
+nn->right=t;
+//nn->right=t;
+//cout<<"\n RIGHT = "<<t-> data;
+s.push(nn);
+// cout<<"\n operator = "<<nn ->data;
+}
+}
+root=s.pop();
+}
+/*
+void Etree::postorder(Enode *root)
+{
+if(root!=NULL)
+{
+postorder(root->left);
+postorder(root->right);
+cout<<" "<<root->data;
+}
+}
+*/
+void Etree::non_rec_post_order(Enode *root)
+{
+    Enode *temp;
+    Stack S1,S2;
+    temp=root;
+    S1.push(temp);
+    while(!S1.isempty())
+    {
+        temp=S1.pop();
+        if(temp->left!=NULL)
+        {
+            S1.push(temp->left);
+        }
+        if(temp->right!=NULL)
+        {
+            S1.push(temp->right);
+        }
+        S2.push(temp);
+    }
+    while(S2.isempty()==0)
+    {
+        temp=S2.pop();
+        cout<<" "<<temp->data;
+    }
+}
+void Etree::del(Enode *root)
+{
+    if(root!=NULL)
+    {
+        del(root->left);
+        del(root->right);
+        cout<<root->data<<" is deleted."<<endl;
+        free(root);
+    }
+}
+
+
+// FUNCTIONS OF STACK
+int Stack::isfull()
+{
+if(top==29)
+{
+return 1;
+}
+else
+{
+return 0;
+}
+}
+
+int Stack::isempty()
+{
+if(top==-1)
+{
+return 1;
+}
+else
+{
+return 0;
+}
+}
+void Stack::push(Enode *t)
+{
+if(!isfull())
+{
+a[++top]=t;
+}
+else{
+cout<<"stack is overflow";
+}
+}
+
+Enode * Stack ::pop()
+{
+if(!isempty())
+{
+return (a[top--]);
+}
+else{
+
+cout<<"stac is empty";
+}
+}
+
+int main()
+{
+   
+/*
+Enode *t;
+Stack s;
+t= new Enode();
+t->data='a';
+s.push(t);
+t=new Enode();
+t->data='b';
+s.push(t);
+t=s.pop();
+cout<<"pop1="<<t->data<<endl;
+t=s.pop();
+cout<<"pop2="<<t->data<<endl;
+return 0;
+}
+*/
+
+Etree E;
+E.createTree();
+//E.postorder(E.root);
+E.non_rec_post_order(E.root);
+cout<<endl;
+E.del(E.root);
+return 0;
+}
