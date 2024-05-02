@@ -1,0 +1,226 @@
+#include<iostream>
+using namespace std;
+class Set
+{
+    int a[20];
+    int n,cnt;
+    public :
+    Set()
+    {
+        n=0;
+        cnt=0;
+    }
+    void add();
+    void display();
+    int size();
+    int search(int );
+    void remove(int);
+    void intersection(Set,Set);
+    void unien(Set,Set);
+    void set_diff(Set,Set);
+    int subset(Set,Set);
+
+};
+void Set::add()
+{
+    cout<<"how many number of elements :";
+    cin>>n;
+    cout<<endl;
+    cout<<"enter the elements one by one :";
+    for(int i=0;i<n;i++)
+    {
+        cin>>a[i];
+        cnt++;
+    }
+}
+int Set::size()
+{
+    cout<<"size of given set is :"<<cnt<<endl;
+}
+void Set::display()
+{
+    //cout<<"elements are :"<<endl;
+    for(int i=0;i<n;i++)
+    {
+        cout<<a[i]<<" ";
+    }
+    cout<<endl;
+}
+int Set::search(int key)
+{
+    for(int i=0;i<n;i++)
+    {
+        if(a[i]==key)
+        {
+            return i;
+            break;
+        }
+    }   
+    return -1;
+}
+void Set::remove(int key)
+{
+    int temp=search(key);
+    for(int i=temp;i<n-1;i++)
+    {
+        a[i]=a[i+1];
+    }
+    n=n-1;
+    cout<<"elements after removel are:";
+    display();
+}
+void Set::intersection(Set A,Set B)
+{
+    for(int i=0;i<A.n;i++)
+    {
+        for(int j=0;j<B.n;j++)
+        {
+            if(A.a[i]==B.a[j])
+            {
+                a[n++]=A.a[i];
+            }
+        }
+    }
+}
+void Set::unien(Set A,Set B)
+{
+    for(int i=0;i<A.n;i++)
+    {
+        a[n++]=A.a[i];
+    }
+    for(int j=0;j<B.n;j++)
+    {
+        if(search(B.a[j])==-1)
+        {
+            a[n++]=B.a[j];
+        }
+    }
+}
+void Set::set_diff(Set A, Set B)
+{
+    for(int i=0;i<A.n;i++)
+    {
+        if(B.search(A.a[i])==-1)
+        {
+            a[n++]=A.a[i];
+        }
+    }
+}
+int Set::subset(Set A,Set B)
+{
+    int temp=A.n;
+    int count=0;
+    for(int i=0;i<A.n;i++)
+    {
+        if(B.search(A.a[i])!=-1)
+        {
+            count++;
+        }
+    }
+    if(temp==count)
+    {
+        return 1;
+    }
+    else 
+    {
+        return -1;
+    }
+}
+
+int main()
+{
+    Set A,B,C,D;
+    int choice;
+    //char ans='n';
+    do
+    {
+        cout<<"****MENU****\n";
+        cout<<"1. add the elements in set \n";
+        cout<<"2. display the size \n";
+        cout<<"3. display the elements in set\n";
+        cout<<"4. remove a element from set \n";
+        cout<<"5. search teh element in set\n";
+        cout<<"6. intersection of two set\n";
+        cout<<"7. union of two sets \n";
+        cout<<"8. set difference \n";
+        cout<<"9. check subset\n";
+        cout<<"10. exit\n";
+        cout<<"enter your choice :";
+        cin>>choice;
+        switch(choice)
+        {
+            case 1:
+                A.add();
+                break;
+            case 2:
+                A.size();
+                break;
+            case 3:
+                A.display();
+                break;
+            case 4:
+                int a;
+                cout<<"enter the key you want to remove :";
+                cin>>a;
+                A.remove(a);
+                break;
+            case 5:
+                int x;
+                cout<<"enter the element you want to search :";
+                cin>>x;
+                //int temp=A.search(x);
+                if(A.search(x)!=-1)
+                {
+                    cout<<"element is present in set."<<endl;
+                }
+                else 
+                {
+                    cout<<"element is not present in set."<<endl;
+                }
+                break;
+            case 6:
+                B.add();
+                C.add();
+                D.intersection(B,C);
+                cout<<"intersection two set is :";
+                D.display();
+                cout<<endl;
+                break;
+            case 7:
+                B.add();
+                C.add();
+                D.unien(B,C);
+                cout<<"union of two set is :";
+                D.display();
+                cout<<endl;
+                break;
+            case 8:
+                B.add();
+                C.add();
+                D.set_diff(B,C);
+                cout<<"difference of set B-C is:";
+                D.display();
+                cout<<endl;
+                break;
+            case 9:
+                B.add();
+                C.add();
+                if(D.subset(B,C)!=-1)
+                {
+                    cout<<"B is the subset of C"<<endl;
+                }
+                else
+                {
+                    cout<<"B is not the subset of C"<<endl;
+                }
+                break;
+            case 10:
+                break;
+            default:
+                cout<<"you have entered invalic choice ."<<endl;    
+        }
+
+    }while(choice!=10);
+    return 0;
+}
+
