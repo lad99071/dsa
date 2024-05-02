@@ -1,0 +1,148 @@
+#include<iostream>
+using namespace std;
+class Hashing
+{
+	long int a[10];
+	public:
+	Hashing()
+	{
+		for(int i=0;i<10;i++)
+		{
+			a[i]=-1;
+		}
+	}
+	void read_lprobing();
+	void read_qprobing();
+	void lookup();
+	void display();
+};
+
+void Hashing::read_lprobing()
+{
+	int index;
+	int count=0;
+	long int key;
+	cout<<"enter the mobile no= ";
+	cin>>key;
+	index=key%10;       // division method is used 
+	if(a[index]==-1)
+	{
+		a[index]=key;
+	}
+	else
+	{
+		while(a[index]!=-1)
+		{
+			index++;
+			count++;
+			if(index==10)
+			{
+				index=0;
+			}
+		}
+		a[index]=key;
+	}
+	cout<<"no of comparisons required in linear probing :"<<count<<endl;
+}
+void Hashing ::read_qprobing()
+{
+	int count=0;
+	int index;
+	long int key;
+	cout<<"enter the mobile no= ";
+	cin>>key;
+	index=key%10;
+	if(a[index]==-1)
+	{
+		a[index]=key;
+	}
+	else
+	{
+		for(int i=0;i<10;i++)
+		{
+			index=(key+i*i)%10;
+			count++;
+			if(a[index]==-1)
+			{
+				a[index]=key;
+				break;
+			}
+		}
+	}
+	cout<<"no of comparisons required in quadratic probong is : "<<count<<endl;
+}
+
+void Hashing::lookup()
+{
+	int index;
+	long int key;
+	cout<<"enter the mobile no you want to search :";
+	cin>>key;
+	index=key%10;
+	if(a[index]==key)
+	{
+		cout<<"your mobile no is present in hash table."<<endl;
+	}
+	else 
+	{
+		for(int i=0;i<10;i++)
+		{
+			if(a[i]==key)
+			{
+				cout<<"Mobile no is present in the hash talbe."<<endl;
+				break;
+			}
+			
+		}
+		cout<<"Mobile no is not present in the hash table"<<endl;
+	
+	}
+	
+}	
+void Hashing:: display()
+{
+	for(int i=0;i<10;i++)
+	{
+		cout<<a[i]<<endl;
+	}
+}
+int main()
+{
+	Hashing obj;
+	int choice;
+	char ans;
+	do
+	{
+		cout<<"*****MENU*****\n";
+		cout<<"1. store the numbers using linear probing\n";
+		cout<<"2. store the no using quadratic probing\n";
+		cout<<"3. search the mobile no in hash table\n";
+		cout<<"4. display the numbers\n";
+		cout<<"5. exit\n";
+		cout<<"please enter your choice :\n";
+		cin>>choice;
+		switch (choice)
+		{
+			case 1:
+				obj.read_lprobing();
+				break;
+			case 2:
+				obj.read_qprobing();
+				break;
+			case 3:
+				obj.lookup();
+				break;
+			case 4:
+				obj.display();
+				break;
+			case 5:
+				break;
+			default:
+				cout<<"you have entered wrong input"<<endl;
+		}
+		cout<<"do you want to continue ?";
+		cin>>ans;
+	}while(ans != 'n');
+	return 0;
+	
+}
